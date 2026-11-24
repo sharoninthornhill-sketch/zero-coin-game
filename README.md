@@ -99,3 +99,24 @@ Run App does not require GitHub sign-in. See Zero Troubleshooting for help with 
 conflicts or failed pushes. See the [repository and push guide](https://github.com/codepetca/zero/blob/main/docs/GETTING-STARTED.md#your-individual-workflow).
 
 Canonical starter source: https://github.com/codepetca/zero-starter
+## ScoreDisplay & Refactor Checks
+
+- **Initial display (`new ScoreDisplay()`):**
+  - Expected: Shows `"Score: 0"` at startup and remains backwards-compatible with existing `new ScoreDisplay()`, `view()`, and `setScore(int)` calls.
+  - Observed: [Record what you observed at launch]
+
+- **Collecting coins & staying on a coin:**
+  - Expected: Collecting a coin increases the score by 1 once per coin without extra points while standing on it (`Score: 1`, up to `Score: 3` when all coins are collected).
+  - Observed: [Record what you observed when collecting coins and staying on one]
+
+- **Restarting before and after winning:**
+  - Expected: Restart resets `points` to `0`, updates the display to `"Score: 0"`, resets coins, and resets the player's position.
+  - Observed: [Record what you observed on Restart mid-game and after winning]
+
+- **Caption updates & instance isolation (`setCaption(String)`):**
+  - Expected: `setCaption(String)` updates the caption text (such as `"Points"`) while keeping the current score value, existing `setScore(int)` calls keep the current caption, and a separate `ScoreDisplay` instance can use a different caption independently.
+  - Observed: [Record what you observed when testing `setCaption(String)` and a second instance]
+
+- **Reused caller check:**
+  - Expected: Copying/reusing `ScoreDisplay` in another project/caller renders its `view()` and updates via `setScore(int)` cleanly.
+  - Observed: [Record what you observed in the other project/caller]
