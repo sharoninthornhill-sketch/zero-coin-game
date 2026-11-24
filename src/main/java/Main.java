@@ -22,6 +22,7 @@ public class Main extends GameApp {
     @Override public void setup() {
         input = new PlayerInput(this);
         score = new ScoreDisplay();
+        score.setCaption("Score");
         message = new Label("");
         var restartButton = new Button("Restart");
         restartButton.onClick(() -> restart());
