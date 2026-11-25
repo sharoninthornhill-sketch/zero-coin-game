@@ -1,15 +1,21 @@
+import javafx.scene.image.Image;
 import zero.Color;
 import zero.GameApp;
 
 public class Player {
     private double x;
     private double y;
-    private final double size = 24;
+    private final double size = 32;
     private final double speed = 180;
+    private Image sprite;
 
     public Player(double startX, double startY) {
         x = startX;
         y = startY;
+    }
+
+    public void setSprite(Image sprite) {
+        this.sprite = sprite;
     }
 
     public void update(int horizontal, int vertical, double seconds,
@@ -24,9 +30,13 @@ public class Player {
         return x + size >= otherX && x <= otherX + otherSize
                 && y + size >= otherY && y <= otherY + otherSize;
     }
-    
+
     public void draw(GameApp app) {
-        app.fill(Color.rgb(100, 149, 237));
-        app.rect(x, y, size, size);
+        if (sprite != null) {
+            app.image(sprite, x, y, size, size);
+        } else {
+            app.fill(Color.rgb(100, 149, 237));
+            app.rect(x, y, size, size);
+        }
     }
 }
