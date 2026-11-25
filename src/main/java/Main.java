@@ -31,6 +31,7 @@ public class Main extends GameApp {
         if (chime != null) {
             chime.setVolume(1);
         }
+        
         input = new PlayerInput(this);
         score = new ScoreDisplay();
         score.setCaption("Score");
