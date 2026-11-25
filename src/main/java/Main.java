@@ -1,13 +1,15 @@
-import zero.Key;
+import javafx.scene.image.Image;
 import zero.Color;
 import zero.GameApp;
+import zero.Sound;
 import zero.ui.Button;
 import zero.ui.Column;
 import zero.ui.Label;
 import zero.ui.Row;
 
-
 public class Main extends GameApp {
+    private Image playerImage;
+    private Sound chime;
     private Player player;
     private PlayerInput input;
     private Coin[] coins;
@@ -15,12 +17,21 @@ public class Main extends GameApp {
     private int points;
     private ScoreDisplay score;
     private Label message;
-    @Override public void settings() {
+
+    @Override
+    public void settings() {
         padding(20);
         size(640, 400);
     }
 
-    @Override public void setup() {
+    @Override
+    public void setup() {
+        playerImage = loadImage("/media-demo/player.png");
+        chime = loadSound("/media-demo/chime.wav");
+        if (chime != null) {
+            chime.setVolume(1);
+        }
+        
         input = new PlayerInput(this);
         score = new ScoreDisplay();
         score.setCaption("Score");
@@ -32,10 +43,12 @@ public class Main extends GameApp {
                 new Row(12, score.view(), message, restartButton), badge.view()));
         restart();
     }
+
     public void restart() {
         player = new Player(40, 180);
+        player.setSprite(playerImage);
         coins = new Coin[] {
-            new Coin(220, 180), new Coin(420, 80), new Coin(540, 300)
+                new Coin(220, 180), new Coin(420, 80), new Coin(540, 300)
         };
         won = false;
         message.setText("Collect all " + coins.length + " coins.");
@@ -44,8 +57,10 @@ public class Main extends GameApp {
         showGame();
     }
 
-    @Override public void update(double seconds) {
-        if (won) return;
+    @Override
+    public void update(double seconds) {
+        if (won)
+            return;
         int horizontal = input.horizontal();
         int vertical = input.vertical();
         player.update(horizontal, vertical, seconds, width(), height());
@@ -54,6 +69,9 @@ public class Main extends GameApp {
                 each.collect();
                 points++;
                 score.setScore(points);
+                if (chime != null) {
+                    chime.play();
+                }
             }
         }
         if (points == coins.length) {
@@ -62,14 +80,18 @@ public class Main extends GameApp {
         }
     }
 
-    @Override public void draw() {
+    @Override
+    public void draw() {
         background(Color.rgb(240, 248, 255));
         fill(Color.rgb(47, 79, 79));
         textSize(20);
         text("Click the canvas, then hold arrows or WASD.", 20, 30);
-        for (Coin each : coins) each.draw(this);
+        for (Coin each : coins)
+            each.draw(this);
         player.draw(this);
     }
 
-    public static void main(String[] args) { launch(args); }
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
